@@ -1,7 +1,7 @@
 /* ===
-    Esse é um exemplo disponibilizado no Terminal de Informação
+    Esse Ã© um exemplo disponibilizado no Terminal de InformaÃ§Ã£o
     Confira o artigo sobre esse assunto, no seguinte link: https://terminaldeinformacao.com/2017/10/03/funcao-gera-arquivo-excel-atraves-de-uma-query-sql/
-    Caso queira ver outros conteúdos envolvendo AdvPL e TL++, veja em: https://terminaldeinformacao.com/advpl/
+    Caso queira ver outros conteÃºdos envolvendo AdvPL e TL++, veja em: https://terminaldeinformacao.com/advpl/
 === */
 
 //Bibliotecas
@@ -9,27 +9,27 @@
 #Include "TopConn.ch"
  
 /*/{Protheus.doc} zQry2Excel
-Função que recebe uma consulta sql e gera um arquivo do excel, dinamicamente
+FunÃ§Ã£o que recebe uma consulta sql e gera um arquivo do excel, dinamicamente
 @author Atilio
 @since 16/05/2017
 @version 1.0
-	@param cQryAux, characters, Query que será executada
-	@param cTitAux, characters, Título do Excel
+	@param cQryAux, characters, Query que serÃ¡ executada
+	@param cTitAux, characters, TÃ­tulo do Excel
 	@example
 	u_zQry2Excel("SELECT B1_COD, B1_DESC FROM SB1010")
-	@obs Cuidado com colunas com mais de 200 caracteres, pode ser que o Excel dê erro ao abrir o XML
+	@obs Cuidado com colunas com mais de 200 caracteres, pode ser que o Excel dÃª erro ao abrir o XML
 /*/
  
 User Function zQry2Excel(cQryAux, cTitAux)
 	Default cQryAux   := ""
-	Default cTitAux   := "Título"
+	Default cTitAux   := "TÃ­tulo"
 	
 	Processa({|| fProcessa(cQryAux, cTitAux) }, "Processando...")
 Return
 
 /*---------------------------------------------------------------------*
  | Func:  fProcessa                                                    |
- | Desc:  Função de processamento                                      |
+ | Desc:  FunÃ§Ã£o de processamento                                      |
  *---------------------------------------------------------------------*/
 
 Static Function fProcessa(cQryAux, cTitAux)
@@ -50,7 +50,7 @@ Static Function fProcessa(cQryAux, cTitAux)
 	Local nTotal      := 0
 	Local nAtual      := 0
 	Default cQryAux   := ""
-	Default cTitAux   := "Título"
+	Default cTitAux   := "TÃ­tulo"
 	
 	cTable := cTitAux
 	
@@ -84,7 +84,7 @@ Static Function fProcessa(cQryAux, cTitAux)
 			aAdd(aColunas, cTitulo)
 		Next
 		 
-		//Criando o objeto que irá gerar o conteúdo do Excel
+		//Criando o objeto que irÃ¡ gerar o conteÃºdo do Excel
 		oFWMsExcel := FWMSExcel():New()
 		oFWMsExcel:AddworkSheet(cWorkSheet)
 			oFWMsExcel:AddTable(cWorkSheet, cTable)
@@ -131,14 +131,18 @@ Static Function fProcessa(cQryAux, cTitAux)
 			oExcel:Destroy()
 		
 		Else
-			//Se existir a pasta do LibreOffice 5
-			If ExistDir("C:\Program Files (x86)\LibreOffice 5")
+			//Se existir a pasta do LibreOffice 5 x86
+			If File("C:\Program Files (x86)\LibreOffice 5\program\scalc.exe")
 				WaitRun('C:\Program Files (x86)\LibreOffice 5\program\scalc.exe "'+cDiretorio+cArquivo+'"', 1)
 			
-			//Senão, abre o XML pelo programa padrão
+			//Se existir a pasta do LibreOffice x64
+			ElseIf File("C:\Program Files\LibreOffice\program\scalc.exe")
+				WaitRun('C:\Program Files\LibreOffice\program\scalc.exe "'+cDiretorio+cArquivo+'"', 1)
+
+            		//SenÃ£o, abre o XML pelo programa padrÃ£o
 			Else
-				ShellExecute("open", cArquivo, "", cDiretorio, 1)
-			EndIf
+                		ShellExecute("open", cArquivo, "", cDiretorio, 1)
+           		EndIf
 		EndIf
 		 
 		QRY_AUX->(DbCloseArea())
